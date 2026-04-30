@@ -1,0 +1,161 @@
+{
+  "entities": {
+    "Profile": {
+      "title": "User Profile",
+      "description": "Stores user membership data and access roles.",
+      "type": "object",
+      "properties": {
+        "cpf": {
+          "type": "string",
+          "description": "CPF of the member"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address"
+        },
+        "matricula": {
+          "type": "string",
+          "description": "Membership ID number"
+        },
+        "empresa": {
+          "type": "string",
+          "description": "Company where the member works"
+        },
+        "pis": {
+          "type": "string",
+          "description": "PIS/PASEP number"
+        },
+        "ctps": {
+          "type": "string",
+          "description": "Work record booklet number"
+        },
+        "nomePai": {
+          "type": "string",
+          "description": "Father's name"
+        },
+        "nomeMae": {
+          "type": "string",
+          "description": "Mother's name"
+        },
+        "estadoCivil": {
+          "type": "string",
+          "enum": ["Solteiro", "Casado", "Divorciado", "Viúvo", "União Estável"],
+          "description": "Marital status"
+        },
+        "telefone": {
+          "type": "string",
+          "description": "Phone number"
+        },
+        "endereco": {
+          "type": "string",
+          "description": "Home address"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Profile picture URL"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["member", "admin"],
+          "description": "Access level"
+        },
+        "approved": {
+          "type": "boolean",
+          "description": "Whether the profile has been approved by an admin"
+        },
+        "blocked": {
+          "type": "boolean",
+          "description": "Whether the user is blocked from accessing the app"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["cpf", "name", "role", "approved"]
+    },
+    "Empresa": {
+      "title": "Empresa",
+      "description": "Companies associated with the union.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["name", "active"]
+    },
+    "Noticia": {
+      "title": "Notícia",
+      "description": "News and announcements published by the union.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["title", "content"]
+    },
+    "Dependente": {
+      "title": "Dependent",
+      "description": "Family members associated with a profile.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "parentesco": {
+          "type": "string",
+          "enum": ["Cônjuge", "Filho(a)", "Pai/Mãe", "Enteado(a)", "Outro"]
+        },
+        "dataNascimento": {
+          "type": "string"
+        },
+        "cpf": {
+          "type": "string"
+        }
+      },
+      "required": ["name", "parentesco"]
+    }
+  },
+  "firestore": {
+    "profiles/{userId}": {
+      "schema": "Profile",
+      "description": "Root collection for all users."
+    },
+    "profiles/{userId}/dependentes/{depId}": {
+      "schema": "Dependente",
+      "description": "Subcollection for dependents of a member."
+    },
+    "empresas/{empresaId}": {
+      "schema": "Empresa",
+      "description": "Companies listed in the system."
+    },
+    "noticias/{noticiaId}": {
+      "schema": "Noticia",
+      "description": "Public announcements and news."
+    }
+  }
+}

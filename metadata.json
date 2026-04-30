@@ -1,0 +1,6 @@
+{
+  "name": "SITITREL - Carteirinha Digital",
+  "description": "Aplicativo de carteirinha digital para associados SITITREL, com gestão de dependentes e painel administrativo.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": []
+}

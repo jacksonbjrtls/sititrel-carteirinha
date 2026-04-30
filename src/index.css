@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Playfair+Display:wght@700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", ui-serif, Georgia, serif;
+  
+  --color-sititrel-blue: #004b93;
+  --color-sititrel-blue-dark: #00366b;
+  --color-sititrel-green: #00a651;
+  --color-sititrel-green-dark: #00813f;
+  --color-sititrel-bg: #f8fafc;
+  --color-sititrel-text: #1e293b;
+  --color-sititrel-accent: #e2e8f0;
+
+  /* Force legacy focus ring and shadow colors to avoid oklch defaults */
+  --tw-ring-color: #000000;
+  --tw-shadow-color: #000000;
+}
+
+@theme {
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --color-sititrel-blue: var(--color-sititrel-blue);
+  --color-sititrel-blue-dark: var(--color-sititrel-blue-dark);
+  --color-sititrel-green: var(--color-sititrel-green);
+  --color-sititrel-green-dark: var(--color-sititrel-green-dark);
+  --color-sititrel-bg: var(--color-sititrel-bg);
+  --color-sititrel-text: var(--color-sititrel-text);
+  --color-sititrel-accent: var(--color-sititrel-accent);
+}
+
+* {
+  box-sizing: border-box;
+  color-scheme: light !important;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  background: #ffffff !important;
+  color: #000000 !important;
+  font-family: "Inter", sans-serif;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #cbd5e1;
+}
+

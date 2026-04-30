@@ -1,0 +1,96 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == "jacksonbjr@gmail.com" ||
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidProfile(data) {
+      return data.keys().hasAll(['cpf', 'name', 'role', 'approved']) &&
+             data.cpf is string &&
+             data.name is string &&
+             data.role in ['member', 'admin'] &&
+             data.approved is bool;
+    }
+
+    function isValidDependente(data) {
+      return data.keys().hasAll(['name', 'parentesco']) &&
+             data.name is string && data.name.size() <= 100 &&
+             data.parentesco in ["Cônjuge", "Filho(a)", "Pai/Mãe", "Enteado(a)", "Outro"];
+    }
+
+    function isValidEmpresa(data) {
+      return data.keys().hasAll(['name', 'active']) &&
+             data.name is string && data.name.size() <= 100 &&
+             data.active is bool;
+    }
+
+    match /profiles/{userId} {
+      allow get: if isSignedIn() || true; 
+      allow list: if true; 
+      
+      allow create: if isSignedIn() && (
+        request.auth.token.email == "jacksonbjr@gmail.com" || 
+        isAdmin() ||
+        (isOwner(userId) && isValidProfile(incoming()))
+      );
+      
+      allow update: if (isSignedIn() && (
+        request.auth.token.email == "jacksonbjr@gmail.com" ||
+        isAdmin() ||
+        (isOwner(userId) && !incoming().diff(existing()).affectedKeys().hasAny(['matricula', 'role', 'approved', 'isSocio']))
+      ));
+
+      allow delete: if request.auth.token.email == "jacksonbjr@gmail.com" || isAdmin();
+
+      match /dependentes/{depId} {
+        allow read, write: if isSignedIn() && (request.auth.token.email == "jacksonbjr@gmail.com" || isOwner(userId) || isAdmin());
+      }
+    }
+
+    match /empresas/{empresaId} {
+      allow read: if true;
+      allow write: if isAdmin() && isValidEmpresa(incoming());
+    }
+
+    match /noticias/{noticiaId} {
+      allow read: if true; // Allow public to read news if they are signed in
+      allow write: if isAdmin();
+    }
+
+    // Admins collection to track additional admins
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if isAdmin();
+    }
+  }
+}
