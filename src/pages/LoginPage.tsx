@@ -419,14 +419,14 @@ const LoginPage: React.FC = () => {
                   </button>
                 </form>
 
-                <div className="relative py-4">
+                <div className="relative py-4 hidden">
                   <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-sititrel-accent/20"></span></div>
                   <div className="relative flex justify-center text-[9px] font-bold uppercase tracking-[0.2em]"><span className="bg-white px-4 text-sititrel-blue/30">Ou use sua conta Google</span></div>
                 </div>
 
                 <button
                   onClick={handleGoogleSignIn}
-                  className="w-full py-4 rounded-2xl border border-sititrel-accent/30 bg-white text-sititrel-blue text-xs font-bold flex items-center justify-center gap-3 hover:bg-sititrel-bg transition-all"
+                  className="w-full py-4 rounded-2xl border border-sititrel-accent/30 bg-white text-sititrel-blue text-xs font-bold flex items-center justify-center gap-3 hover:bg-sititrel-bg transition-all hidden"
                 >
                   <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="h-5 w-5" alt="Google" />
                   Continuar com Google
